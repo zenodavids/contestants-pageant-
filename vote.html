@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <button type="button">upgrade your browser</button> to improve your
+        experience.
+      </p>
+    <![endif]-->
+
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <div id="payment-failed">
+      Uh-oh. Please try again, or contact support if you're encountering
+      difficulties making payment.
+    </div>
+    <br />
+    <form>
+      <div class="container">
+        <div class="card">
+          <div class="box slide-img">
+            <div class="content">
+              <div class="overlay">
+                <h2 class="">01</h2>
+              </div>
+              <img src="/images/pic 1.jpg" alt="" />
+            </div>
+            <div class="overlay">
+              <button
+                type="button"
+                class="start-payment-button"
+                onclick="makePayment()"
+              >
+                Vote Now
+              </button>
+            </div>
+          </div>
+          <div class="names">
+            <p>Miss bee</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="box slide-img">
+            <div class="content">
+              <div class="overlay">
+                <h2 class="">02</h2>
+              </div>
+              <img src="/images/pic 2.jpg" alt="" />
+            </div>
+            <div class="overlay">
+              <button
+                type="button"
+                class="start-payment-button"
+                onclick="makePayment()"
+              >
+                Vote Now
+              </button>
+            </div>
+          </div>
+          <div class="names">
+            <p>Miss bee</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="box slide-img">
+            <div class="content">
+              <div class="overlay">
+                <h2 class="">03</h2>
+              </div>
+              <img src="/images/pic 3.jpg" alt="" />
+            </div>
+            <div class="overlay">
+              <button
+                type="button"
+                class="start-payment-button"
+                onclick="makePayment()"
+              >
+                Vote Now
+              </button>
+            </div>
+          </div>
+          <div class="names">
+            <p>Miss bee</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="box slide-img">
+            <div class="content">
+              <div class="overlay">
+                <h2 class="">04</h2>
+              </div>
+              <img src="/images/pic 4.jpg" alt="" />
+            </div>
+            <div class="overlay">
+              <button
+                type="button"
+                class="start-payment-button"
+                onclick="makePayment()"
+              >
+                Vote Now
+              </button>
+            </div>
+          </div>
+          <div class="names">
+            <p>Miss bee</p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div id="payment-success">Thank you! Enjoy your awesome cruise.🚢</div>
+    <div id="payment-pending">Verifying...Setting up your cruise🚢</div>
+    <script>
+      function makePayment() {
+        FlutterwaveCheckout({
+          public_key: 'FLWPUBK_TEST-SANDBOXDEMOKEY-X',
+          tx_ref: 'titanic-48981487343MDI0NzMx',
+          amount: 54600,
+          currency: 'NGN',
+          payment_options: 'card, mobilemoneyghana, ussd',
+          callback: function (payment) {
+            // Send AJAX verification request to backend
+            verifyTransactionOnBackend(payment.id)
+          },
+          onclose: function (incomplete) {
+            if (incomplete || window.verified === false) {
+              document.querySelector('#payment-failed').style.display = 'block'
+            } else {
+              document.querySelector('form').style.display = 'none'
+              if (window.verified == true) {
+                document.querySelector('#payment-success').style.display =
+                  'block'
+              } else {
+                document.querySelector('#payment-pending').style.display =
+                  'block'
+              }
+            }
+          },
+          meta: {
+            consumer_id: 23,
+            consumer_mac: '92a3-912ba-1192a',
+          },
+          customer: {
+            email: 'rose@unsinkableship.com',
+            phone_number: '08102909304',
+            name: 'Rose DeWitt Bukater',
+          },
+          customizations: {
+            title: 'Miss African Pride',
+            description: 'Vote For Your Favorite Contestant',
+            logo: 'images/map-logo.png',
+          },
+        })
+      }
+
+      function verifyTransactionOnBackend(transactionId) {
+        // Let's just pretend the request was successful
+        setTimeout(function () {
+          window.verified = true
+        }, 200)
+      }
+    </script>
+  </body>
+</html>
